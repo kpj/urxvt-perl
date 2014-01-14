@@ -13,14 +13,12 @@ sub key_press {
 
  	if($keysym eq 118 && $event->{state} & urxvt::Mod1Mask) {
 		# press [alt]+v]
-		warn "Pasting\n";
 		paste($self);
 
 		return 1; # ignore XEvent
 	} 
 	if($keysym eq 99 && $event->{state} & urxvt::Mod1Mask) {
 		# press [alt]+c]
-		warn "Copying\n";
 		copy($self);
 
 		return 1; # Ignore XEvent
@@ -29,11 +27,10 @@ sub key_press {
 	()
 }
 
-
 sub paste {
 	my ($self) = @_;
 
-	my $content = `xsel -ob`;
+	my $content = unescape(`xsel -ob`);
 	chomp($content);
 	$self->tt_paste($content);
 
@@ -43,8 +40,31 @@ sub paste {
 sub copy {
 	my ($self) = @_;
 
-	my $content = $self->selection;
+	my $content = escape($self->selection);
 	system('echo "' . $content . '" | xsel -ib');
 
 	()
+}
+
+sub escape {
+	my ($str) = @_;
+
+	$str =~ s/\\$/\\ /g;
+	$str =~ s/"/\\"/g;
+
+	return $str;
+}
+
+sub unescape {
+	my ($str) = @_;
+
+	$str =~ s/\\"/"/g;
+	$str =~ s/\\ $/\\/g; # TODO: don't always replace them
+
+	return $str;
+}
+
+sub at {
+	my ($str, $index) = @_;
+	return substr($str, $index - 1, 1);
 }

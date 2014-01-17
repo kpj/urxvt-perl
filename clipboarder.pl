@@ -30,7 +30,8 @@ sub key_press {
 sub paste {
 	my ($self) = @_;
 
-	my $content = unescape(`xsel -ob`);
+	my $str = `xsel -ob`;
+	my $content = unescape($str);
 	chomp($content);
 	$self->tt_paste($content);
 

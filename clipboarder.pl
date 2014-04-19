@@ -42,7 +42,7 @@ sub copy {
 	my ($self) = @_;
 
 	my $content = escape($self->selection);
-	system('echo "' . $content . '" | xsel -ib');
+	system('echo -n "' . $content . '" | xsel -ib');
 
 	()
 }

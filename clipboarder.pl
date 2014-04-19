@@ -12,13 +12,13 @@ sub key_press {
 #	warn "Keypress: " . $octets . " " . $keysym . "\n";
 
  	if($keysym eq 118 && $event->{state} & urxvt::Mod1Mask) {
-		# press [alt]+v]
+		# press [alt]+[v]
 		paste($self);
 
 		return 1; # ignore XEvent
 	} 
 	if($keysym eq 99 && $event->{state} & urxvt::Mod1Mask) {
-		# press [alt]+c]
+		# press [alt]+[c]
 		copy($self);
 
 		return 1; # Ignore XEvent
